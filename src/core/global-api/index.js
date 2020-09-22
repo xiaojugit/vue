@@ -51,6 +51,8 @@ export function initGlobalAPI (Vue: GlobalAPI) {
     return obj
   }
 
+  // 定义options对象, 此种方式创建没有原型，可提高性能
+  // 并添加components, directives, filters属性
   Vue.options = Object.create(null)
   ASSET_TYPES.forEach(type => {
     Vue.options[type + 's'] = Object.create(null)
@@ -60,10 +62,15 @@ export function initGlobalAPI (Vue: GlobalAPI) {
   // components with in Weex's multi-instance scenarios.
   Vue.options._base = Vue
 
+  // 添加keep-alive组件
   extend(Vue.options.components, builtInComponents)
 
+  // 初始化Vue.use
   initUse(Vue)
+  // 初始化混入 Vue.mixin
   initMixin(Vue)
+  // 初始化Vue.extend
   initExtend(Vue)
+  // 初始化Vue.component, Vue.directive, Vue.filter
   initAssetRegisters(Vue)
 }
